@@ -1,7 +1,7 @@
 # Project stuffs
 /raw/*
 /data/
-/src/data/predicts/
+/src/handwritten_text_recognition/data/predicts/
 /output/
 /tensorboard/
 

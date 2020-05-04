@@ -19,11 +19,11 @@ import os
 import string
 import datetime
 
-from data import preproc as pp, evaluation
-from data.generator import DataGenerator, Tokenizer
-from data.reader import Dataset
+from handwritten_text_recognition.data import evaluation, preproc as pp
+from handwritten_text_recognition.data.generator import DataGenerator, Tokenizer
+from handwritten_text_recognition.data.reader import Dataset
 from kaldiio import WriteHelper
-from network.model import HTRModel
+from handwritten_text_recognition.network.model import HTRModel
 
 
 if __name__ == "__main__":
@@ -50,7 +50,7 @@ if __name__ == "__main__":
 
     input_size = (1024, 128, 1)
     max_text_length = 128
-    charset_base = string.printable[:95]
+    charset_base = string.printable[:62] + ',.?!-:;"\'#&()*+/ '
 
     if args.transform:
         assert os.path.exists(raw_path)

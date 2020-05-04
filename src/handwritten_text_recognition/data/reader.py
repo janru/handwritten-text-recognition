@@ -5,7 +5,7 @@ import html
 import string
 import xml.etree.ElementTree as ET
 
-from data import preproc as pp
+from handwritten_text_recognition.data import preproc as pp
 from functools import partial
 from glob import glob
 from multiprocessing import Pool

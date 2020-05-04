@@ -6,7 +6,7 @@ Image renderings and text are created on the fly each time.
 from itertools import groupby
 from tensorflow.keras.preprocessing.sequence import pad_sequences
 
-import data.preproc as pp
+import handwritten_text_recognition.data.preproc as pp
 import h5py
 import numpy as np
 import unicodedata
