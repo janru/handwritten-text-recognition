@@ -78,7 +78,7 @@ class Dataset():
         return dataset
 
     def _iam(self):
-        """IAM dataset reader"""
+        """IAM line dataset reader"""
 
         pt_path = os.path.join(self.source, "largeWriterIndependentTextLineRecognitionTask")
         paths = {"train": open(os.path.join(pt_path, "trainset.txt")).read().splitlines(),
@@ -112,6 +112,51 @@ class Dataset():
 
                     dataset[i]['gt'].append(gt_dict[line])
                     dataset[i]['dt'].append(img_path)
+                except KeyError:
+                    pass
+
+        return dataset
+
+    def _iam_words(self):
+        """IAM word dataset reader"""
+
+        # dataset_name: str = self.sou .split(sep='_')[0]
+
+        pt_path = os.path.join(self.source, "largeWriterIndependentTextLineRecognitionTask")
+        paths = {"train": open(os.path.join(pt_path, "trainset.txt")).read().splitlines(),
+                 "valid": open(os.path.join(pt_path, "validationset1.txt")).read().splitlines(),
+                 "test": open(os.path.join(pt_path, "testset.txt")).read().splitlines()}
+
+        words = open(os.path.join(self.source, "ascii", "words.txt")).read().splitlines()
+        gt_dict = dict()
+
+        for word in words:
+            if not word or word[0] == "#":
+                continue
+
+            split = word.split()
+
+            if split[1] == "ok":
+                gt_dict[split[0]] = " ".join(split[8::]).replace("|", " ")
+
+        dataset = dict()
+
+        for i in self.partitions:
+            dataset[i] = {"dt": [], "gt": []}
+
+            for path_with_words in paths[i]:
+                try:
+                    split = path_with_words.split("-")
+                    folder = f"{split[0]}-{split[1]}"
+
+                    img_path = os.path.join(self.source, "words", split[0], folder)
+
+                    for r, d, f in os.walk(img_path):
+                        for file in f:
+                            file_name_no_ext = os.path.splitext(file)[0]
+                            dataset[i]['gt'].append(gt_dict[file_name_no_ext])
+                            dataset[i]['dt'].append(os.path.join(r, file))
+
                 except KeyError:
                     pass
 

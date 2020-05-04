@@ -28,7 +28,8 @@ from handwritten_text_recognition.network.model import HTRModel
 
 if __name__ == "__main__":
     parser = argparse.ArgumentParser()
-    parser.add_argument("--source", type=str, required=True)
+    parser.add_argument("--source", type=str, required=True,
+                        choices=['bentham', 'iam', 'iam_words', 'rimes', 'saintgall', 'washington'])
     parser.add_argument("--arch", type=str, default="flor")
 
     parser.add_argument("--transform", action="store_true", default=False)
@@ -43,7 +44,8 @@ if __name__ == "__main__":
     parser.add_argument("--batch_size", type=int, default=16)
     args = parser.parse_args()
 
-    raw_path = os.path.join("..", "raw", args.source)
+    dataset_name: str = args.source.split(sep='_')[0]
+    raw_path = os.path.join("..", "raw", dataset_name)
     source_path = os.path.join("..", "data", f"{args.source}.hdf5")
     output_path = os.path.join("..", "output", args.source, args.arch)
     target_path = os.path.join(output_path, "checkpoint_weights.hdf5")
